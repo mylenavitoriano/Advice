@@ -6,17 +6,24 @@ export default function App() {
 
   const [search, setSearch] = useState('')
   const [data, setData] = useState({})
+  const [error, setError] = useState(false)
 
   const buscaPalavra = async () => {
+    setError(false)
     const req = await fetch(`https://api.adviceslip.com/advice/search/${search}`)
     const dados = await req.json()
-    setData(dados.slips[Math.floor(Math.random() * dados.slips.length)])
+    if(dados.slips){
+      setData(dados.slips[Math.floor(Math.random() * dados.slips.length)])
+    }else{
+      setError(true)
+    }
   }
 
   const buscaId = async () => {
     let numberRandom = Math.floor(Math.random() * 224)
     const req = await fetch(`https://api.adviceslip.com/advice/${numberRandom}`)
     const dados = await req.json()
+    
     setData(dados.slip)
   }
 
@@ -35,7 +42,7 @@ export default function App() {
               </div>
             </div>
             <div className={data.advice ? 'advice' : 'hidden'}>
-              <p>{data.advice}</p>
+              <p>{error ? "Oops, looks like we don't have advice with that keyword..." : data.advice}</p>
             </div>
           </div>
         </div>
