@@ -9,18 +9,19 @@ export default function App() {
   const [error, setError] = useState(false)
 
   const buscaPalavra = async () => {
-    
     const req = await fetch(`https://api.adviceslip.com/advice/search/${search}`)
     const dados = await req.json()
     if(dados.slips){
       setError(false)
       setData(dados.slips[Math.floor(Math.random() * dados.slips.length)])
-    }else{
+    }else if(dados.message){
       setError(true)
     }
   }
 
   const buscaId = async () => {
+    setError(false)
+    setSearch("")
     let numberRandom = Math.floor(Math.random() * 224)
     const req = await fetch(`https://api.adviceslip.com/advice/${numberRandom}`)
     const dados = await req.json()
@@ -38,11 +39,11 @@ export default function App() {
                 <FaDice color={"#FFF"}/>
               </div>
               <div className={'search'}>
-                <input type="text" onChange={(e)=>setSearch(e.target.value)} placeholder="Search by keyword"/>
+                <input type="text" value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search by keyword"/>
                 <button onClick={buscaPalavra}><FaSearch color={"#FFF"}/></button>
               </div>
             </div>
-            <div className={data.advice ? 'advice' : 'hidden'}>
+            <div className={data.advice | error ? 'advice' : 'hidden'}>
               <p>{error ? "Oops, looks like we don't have advice with that keyword..." : data.advice}</p>
             </div>
           </div>
