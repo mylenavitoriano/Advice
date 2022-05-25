@@ -9,10 +9,11 @@ export default function App() {
   const [error, setError] = useState(false)
 
   const buscaPalavra = async () => {
-    setError(false)
+    
     const req = await fetch(`https://api.adviceslip.com/advice/search/${search}`)
     const dados = await req.json()
     if(dados.slips){
+      setError(false)
       setData(dados.slips[Math.floor(Math.random() * dados.slips.length)])
     }else{
       setError(true)
