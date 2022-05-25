@@ -43,7 +43,7 @@ export default function App() {
                 <button onClick={buscaPalavra}><FaSearch color={"#FFF"}/></button>
               </div>
             </div>
-            <div className={data.advice | error ? 'advice' : 'hidden'}>
+            <div className={(data.advice || error) ? 'advice' : 'hidden'}>
               <p>{error ? "Oops, looks like we don't have advice with that keyword..." : data.advice}</p>
             </div>
           </div>
